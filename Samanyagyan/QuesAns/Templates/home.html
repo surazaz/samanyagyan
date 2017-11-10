@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Welcome to the Samanyagyan</title>
+</head>
+<body>
+<H1>Sample quiz model</H1>
+<H2> list of Quesions With ANswers</H2>
+
+	{% for i in ob %}
+		{{i.id}}> {{i.ques}}----{{i.ans}}
+
+	
+<br>
+	{% endfor %}
+
+
+</body>
+</html>

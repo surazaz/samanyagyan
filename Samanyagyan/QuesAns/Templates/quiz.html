@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>play the quiz</title>
+</head>
+<body>
+<h3>List of Questions</h3><p>
+{% for i in ob %}
+	{{i.id}}.{{i.ques}}<br>
+		
+	{% endfor %}
+
+<br><p align="center">{{z.ques}}</p>
+
+
+
+</p>
+
+ <form action="/quiz/" method="POST">
+      <center>{% csrf_token %}
+    {{ form.as_p }}
+    
+
+    <input  type="Submit" align="center" name="submit" value="Submit"/>
+    </center>
+    
+
+
+</form>
+</p>
+
+<p align="center">Your answer is::{{ data }} which is {{r}}...
+The correct answer is: {{z.ans}}</p>
+
+
+
+</body>
+</html>
