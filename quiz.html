@@ -1,0 +1,103 @@
+{% extends 'teacherbase.html' %}
+{% block content %}
+
+<div class="container-fluid">
+
+  <div class="main">
+       <div class="content mt-3">
+           <nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item active" aria-current="page">Quiz</li>
+  </ol>
+</nav>
+
+
+            <form id="myform" method="post" action="{% url 'quiz'%}">
+                {%csrf_token%}
+            <div class="row">
+            <div class="col-md-6">
+                   <p><button class="btn btn-primary" type="button">
+                       Add Questions to Quiz</button></p>
+           <p><textarea name="question" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+           </p>
+               <div id="optioncontainer">
+                <p id="moreoption"><input type="text" name="option">
+                 <input type="radio" name="correctansswer"><button id="duplicater" onclick="duplicate()">+++</button></p>
+            </div>
+                <div id="wholecontainer"></div>
+                </div>
+                <div class="col">
+                    <p><button class="btn btn-info" type="button">
+                       Type</button></p>
+                      <input id="mcq" type="radio" name="type" value="mcq" checked="true">MCQ<br>
+                <input id="truefalse" type="radio" name="type" value="truefalse"> True False<br>
+                <input id="subjective" type="radio" name="type" value="subjective">Subjective<br>
+               </div>
+            </div>
+                <!--<input class="btn btn-success" type="submit" value="Submit">-->
+            </form>
+           <form method="post" action="#">
+{%csrf_token%}
+    <label>Options</label>
+
+    <fieldset id="exercises">
+        <div class="exercise">
+            <input type="text" name="exercise[]"><button class="remove">x</button>
+        </div>
+    </fieldset>
+
+    <button id="add_exercise">Add option</button>
+
+</form>
+
+
+       </div>
+</div>
+</div>
+
+
+<script type="text/javascript">
+
+    $(document).ready(function(){
+    var myc='<p id="moreoption"><input type="text" name="option"><input type="radio" name="correctansswer"><a id="addoption" href="">+++</a></p>'
+
+    $("#mcq").click(function (){
+       $("#optioncontainer").html(myc)
+    });
+        $("#truefalse").click(function(){
+       $("#optioncontainer").html("hy")
+    });
+            $("#subjective").click(function(){
+       $("#optioncontainer").html("")
+    });
+            $("#addoption").click(function(){
+       $("#optioncontainer").append("<p>jkj</p>")
+    });
+    });
+
+
+</script>
+<script>
+var i = 0;
+var original = document.getElementById('duplicater');
+
+function duplicate() {
+    var clone = original.cloneNode(true); // "deep" clone
+    clone.id = "duplicater" + ++i;
+    // or clone.id = ""; if the divs don't need an ID
+    original.parentNode.append(clone);
+}
+</script>
+<script>//Clone and Remove Form Fields
+
+$('#add_exercise').on('click', function() {
+    $('#exercises').append('<div class="exercise"><input type="text" name="exercise[]"><button class="remove">x</button></div>');
+    return false; //prevent form submission
+});
+
+$('#exercises').on('click', '.remove', function() {
+    $(this).parent().remove();
+    return false; //prevent form submission
+});</script>
+
+{% endblock %}
