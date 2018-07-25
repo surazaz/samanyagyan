@@ -1,0 +1,74 @@
+{%extends 'adminbase.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+{% include 'message.html' %}
+<div class="container-fluid">
+<div class="row">
+    <div class="col-md-6">
+    <div class="card">
+        <div class="card-header">
+            {{formtype}}
+        </div>
+        <div class="card-body">
+            <ul class="list-group list-group-flush">
+                {% if user_list %}
+                {% for id, name in user_list %}
+                {% if formtype == 'Teacher' or formtype == 'Student' or formtype == 'Parent' %}
+                <li class="list-group-item">{{name}}
+                    <a href="/mainapp/userform/{{formtype}}/{{id}}/">
+                        <button class="btn btn-primary btn-sm" style="float:right;">View Details</button>
+                    </a>
+                </li>
+                {% else %}
+                <li class="list-group-item">{{name}}
+                    <a href="/mainapp/allform/{{formtype}}/{{id}}/">
+                    <button class="btn btn-outline-primary btn-sm" style="float:right;">View Details</button></a></li>
+                {% endif %}
+                {% endfor %}
+
+                {% else %}
+                {% for id, name in course_list %}
+                <li class="list-group-item">{{name}}
+                    <a href="/mainapp/allform/{{formtype}}/{{id}}/">
+                        <button class="btn btn-primary btn-sm" style="float:right;">View Details</button>
+                    </a>
+                </li>
+                {% endfor %}
+                {% endif%}
+
+            </ul>
+
+        </div>
+    </div>
+    </div>
+
+    <div class="col-md-6">
+    <div class="card">
+  <div class="card-header">
+      {{ formtype }} Form
+  </div>
+<div class="card-body">
+              <form action="" method="post">
+            {% csrf_token %}
+                  {% if formtype == 'Student' or formtype == 'Courses'%}
+                  <label>Grade</label>
+
+                 <select name='grade'  class="form-control">
+                     <option disabled selected>{{grade}}</option>
+                     <div class="dropdown-divider"></div>
+                      {%for gid,gname in gradelist%}
+                    <option value="{{gid}}" >{{gname}}</option>
+                    {%endfor%}
+                 </select>
+                  {%endif%}
+            {{form|crispy}}
+            <button type="submit" class="btn btn-success" >Update</button>
+        </form>
+      </div>
+    </div>
+    </div>
+</div>
+</div>
+
+{% endblock %}

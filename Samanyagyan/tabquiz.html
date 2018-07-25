@@ -1,0 +1,61 @@
+{% extends 'sidebarbase.html' %}
+
+{% block content %}
+
+  <ol class="breadcrumb">
+      <li class="breadcrumb-item active" aria-current="page"><a href="#"> Home</a></li>
+      <li class="breadcrumb-item active" aria-current="page"><a href="#"> Dashboard</a></li>
+      <li class="breadcrumb-item active" aria-current="page"><a href="/mainapp/quiz/"> Quiz</a></li>
+  </ol>
+</nav>
+
+<div class="card">
+  <div class="card-body">
+
+<div class="row">
+    <div class="col-md-8">
+        <ul class="nav nav-tabs">
+          <li class="nav-item">
+            <a class="nav-link active" href="/mainapp/coursequiz/">My Courses</a>
+          </li>
+          <li class="nav-item">
+
+        </ul>
+    </div>
+</div>
+
+<br>
+
+      <div class="row">
+    <div class="col-md-8">
+        <div class="card" style="width: 100%;   ">
+              {% for cid,cname in courselist %}
+
+            <li id="{{cid}}" class="list-group-item">{{cname}}
+                <a href="/mainapp/coursequiz/{{cid}}/" ><button class="btn btn-outline-primary btn-sm" style="float:right;">
+                <style>
+            .list-group-item:hover {color: #F48B16;}
+            </style>
+                      View Quiz
+              </button>
+                   </a>
+                                <a href="/mainapp/justquestions/{{cid}}/" ><button class="btn btn-outline-primary btn-sm" style="float:right;">
+                <style>
+            .list-group-item:hover {color: #F48B16;}
+            </style>
+                      Solve Questions
+              </button>
+                   </a>
+            </li>
+
+              {% endfor %}
+        </div>
+    </div>
+</div>
+
+
+
+  </div>
+</div>
+
+{% endblock %}

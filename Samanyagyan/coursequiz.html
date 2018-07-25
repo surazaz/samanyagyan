@@ -1,0 +1,37 @@
+{% extends 'sidebarbase.html' %}
+
+{% block content %}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+      <li class="breadcrumb-item active" aria-current="page"><a href="#"> Home</a></li>
+      <li class="breadcrumb-item active" aria-current="page"><a href="#"> Dashboard</a></li>
+      <li class="breadcrumb-item active" aria-current="page"><a href="/mainapp/quiz/"> Quiz</a></li>
+  </ol>
+</nav>
+
+<div class="row">
+
+    <div class="col-md-8">
+
+    <div class="card" >
+      <div class="card-body">
+
+              {% for qid,qname in quizlist %}
+            <a href="/mainapp/takequiz/{{qid}}/">
+                <style>
+            .list-group-item:hover {color: #F48B16;}
+            </style>
+                <li id="{{qid}}" class="list-group-item">{{qname}}
+                <button type="submit" class="btn btn-outline-primary btn-sm" style="float:right;">
+                    Take Quiz
+                </button>
+            </li></a>
+
+              {% endfor %}
+
+        </div>
+    </div>
+</div>
+</div>
+
+{% endblock %}

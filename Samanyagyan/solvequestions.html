@@ -1,0 +1,155 @@
+{% extends 'sidebarbase.html' %}
+{% load static %}
+{% block content %}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+      <li class="breadcrumb-item active" aria-current="page"><a href="#"> Home</a></li>
+      <li class="breadcrumb-item active" aria-current="page"><a href="#"> Dashboard</a></li>
+      <li class="breadcrumb-item active" aria-current="page"><a href="/mainapp/quiz/"> Quiz</a></li>
+  </ol>
+</nav>
+<br>
+        <h5>
+            Time Remaining
+        </h5>
+        <hr>
+        <div id="clockdiv"></div>
+        <hr>
+<div id="{{id}} "class="row">
+       <div class="col-md-8">
+           <div class="card">
+               <div class="card-body" style="background-color:#F7F7F9;">
+
+           <div id="questioncontainer">
+           </div>
+
+        <br>            <form id="answerform" method="post">
+                   {%csrf_token%}
+
+                        <div id="answercontainer">
+                        </div>
+                      <br>
+                   <button type="submit" class="btn btn-success" >Submit</button>
+               </form>
+
+           <button id="nextquestion" class="btn btn-success btn" style="float:right;">Next</button>
+           <button id="prevquestion" class="btn btn-success btn" style="float:right;">Previous</button>
+               </div>
+           </div>
+
+    </div>
+</div>
+
+
+<script>
+    var mydata = {{json_data}};
+
+$( document ).ready(function(event) {
+    var myvar=0;
+    keys = [];
+    questions = [];
+    <!--idlist and questionlist-->
+    for(i in mydata){
+    keys.push(mydata[i][0]);
+    questions.push(mydata[i][1]);
+    }
+    console.log(keys);
+    totalquestion=keys.length;
+setTimeout(function() {
+       $("#nextquestion").trigger('click');
+   },10);
+        console.log(myvar);
+
+$('#prevquestion').on('click', function(){
+    myvar--;
+    myvar--;
+    console.log(myvar);
+    $('#nextquestion').prop('disabled',false);
+
+    $("#nextquestion").trigger('click');
+
+
+    });
+
+$('#nextquestion').on('click', function(){
+    $('form').attr('action','/mainapp/solvequestions/'+ keys[myvar] +'/');
+    $(':input[type="submit"]').prop('disabled',false);
+
+    if(myvar>=totalquestion){
+    end_time = $.now();
+    $('#nextquestion').prop('disabled',true);
+    }
+    else if(myvar<0){
+    myvar = 0;
+    }
+
+    else
+    {
+    ques_start_time=$.now();
+    $.ajax({
+    type: "GET",
+    url: "/mainapp/details/"+keys[myvar],
+    context: this,
+    success: function(data, status) {
+    delete data['correctanswer'];
+    delete data['question'];
+     $('#answercontainer').html('<br>');
+    if(data['type']=='subjective')
+    {
+    $('#answercontainer').html('<p><textarea name="answer" placeholder="Type the answer here" class="form-control" id="exampleFormControlTextarea1" rows="3" required></textarea></p>');
+    }
+     else if(data['type']=='mcq')
+    {
+    var mcqdata=JSON.parse(JSON.stringify(data));
+       delete mcqdata['type'];
+       delete mcqdata['course'];
+       delete mcqdata['topic'];
+       delete mcqdata['updated_at'];
+       delete mcqdata['created_at'];
+       console.log(mcqdata);
+    for(option in mcqdata){
+        $('#answercontainer').append('<label><input type="radio" value="'+mcqdata[option]+'"name="answer" required>'+mcqdata[option]+'</label><br>');
+    }
+    }
+    else
+    {
+    $('#answercontainer').html('<br><label><input type="radio"  value="true" name="answer" required>True</label><br>' +
+    '<label><input type="radio"  value="false" name="answer">False</label>');
+    }
+    }
+    });
+         $('#answercontainer').html('<br>');
+          $('#questioncontainer').html('<h3>' + questions[myvar] + '</h3>');
+
+}
+myvar++;
+    });
+    });
+
+$("#answerform").on('submit',function(){
+$(':input[type="submit"]').prop('disabled',true);
+submit_time = $.now();
+question_time_taken = (submit_time - ques_start_time)/1000;
+var frmdata = $(this).serializeArray();
+frmdata.push({name:"time_taken", value:question_time_taken});
+$.ajax({
+    type: $(this).attr('method'),
+    url: this.action,
+    data: frmdata,
+    context: this,
+    success: function(data, status) {
+    alert(data);
+       $("#nextquestion").trigger('click');
+
+    }
+    });
+    return false;
+});
+</script>
+
+
+
+<script type="text/javascript" src="{% static 'js/takequiz.js' %}"></script>
+
+
+{% endblock %}

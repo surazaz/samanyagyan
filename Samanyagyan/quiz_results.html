@@ -1,0 +1,24 @@
+{% extends 'sidebarbase.html' %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card" style="width: 100%;   ">
+              {% for name in quizname %}
+              <a href="/mainapp/coursequiz/{{cid}}/" >
+            <li id="{{cid}}" class="list-group-item">{{name}}
+                <button class="btn btn-outline-primary btn-sm" style="float:right;">
+                <style>
+            .list-group-item:hover {color: #F48B16;}
+            </style>
+                      View Quiz
+              </button>
+
+            </li>
+              </a>
+              {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
