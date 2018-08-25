@@ -1,0 +1,15 @@
+install heroku cli
+git clone
+heroku create <appname>
+pip freeze requirements.txt
+git init the main folder that has learnclass and mainapp
+install whitenoise
+create procfile
+disable collect static
+change settings.py
+change wsgi.py
+git push heroku master
+heroku login
+Then matplotlib as agg
+procfile,requirements.txt,manage.py at the same root level
+
